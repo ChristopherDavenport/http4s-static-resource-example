@@ -1,2 +1,1 @@
-# http4s-static-resource-example
-
+# http4s-static-resource-example [![Build Status](https://travis-ci.com/ChristopherDavenport/http4s-static-resource-example.svg?branch=master)](https://travis-ci.com/ChristopherDavenport/http4s-static-resource-example)
