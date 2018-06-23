@@ -59,6 +59,10 @@ object Conversation {
   }
 
   object ConversationService {
+    final case class ConversationIdsResponse(conversations: List[String])
+    object ConversationIdsResponse {
+      implicit val conversationIdResponseEncoder = deriveEncoder[ConversationIdsResponse]
+    }
 
     def service[F[_]: Sync](algebra: ConversationAlgebra[F]): HttpService[F] = {
       val dsl = new Http4sDsl[F]{}
@@ -70,6 +74,11 @@ object Conversation {
           _ <- algebra.postMessage(newMessage)
           resp <- Ok()
         } yield resp
+
+        case GET -> Root / "conversation" => 
+          algebra.conversationIds.flatMap{ids => 
+            Ok(ConversationIdsResponse(ids).asJson)
+          }
 
         case GET -> Root / "conversation" / conversationId => 
           algebra.getConversation(conversationId)
